@@ -133,42 +133,13 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	// create an empty user of type models.User:
 	var user User
-	/* --- from here, i tried to update a single field  */
-	// What if we need to update a only one field/variable  of a row in database
-	//  to update a partial field of the User struct, we will declare an
-	// user_input struct to hold the expected data from the client.
 
-	var user_input struct { // the format must be same that we have in User struct in models.go file
-		ID       int64   `json:"id"`
-		Name     *string `json:"name"`
-		Location *string `json:"location"`
-		Age      *int64  `json:"age"`
-	}
 	// decode the JSON request to user
-	err = json.NewDecoder(r.Body).Decode(&user_input)
+	err = json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
 		log.Fatalf("Unable to decode the request body.  %v", err)
 	}
-
-	// If the user_input.Name value is nil then we know that no corresponding "Name" key/value pair
-	// was provided in the JSON request body. So we move on and leave the
-	// user.Name value unchanged. Otherwise, we update the user.Name value with the new `Name``
-	// value. Importantly, because user_input.Name is a now a pointer to a string, we need
-	// to dereference the pointer using the * operator to get the underlying value
-	// before assigning it to our user record
-	if user_input.Name != nil {
-		user.Name = *user_input.Name
-	}
-
-	// We also do the same for the other fields in the input struct.
-	if user_input.Location != nil {
-		user.Location = *user_input.Location
-	}
-	if user_input.Age != nil {
-		user.Age = *user_input.Age
-	}
-	/* But seems like the partial field codes are not working... */
 
 	// call `UpdateUser` sql query to get the values from the request body and update them
 	// to the appropriate fields of the user record in user  table of PSQL.
