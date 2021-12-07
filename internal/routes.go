@@ -18,9 +18,10 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/createnewuser", CreateUserHandler).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/deleteuser/{id}", DeleteUserHandler).Methods("DELETE", "OPTIONS")
 
-	//for API endpoints which perform partial updates on a resource,  we use the PATCH rather than PUT
-	// PUT is intended for replacing a resource in full
-	router.HandleFunc("/api/updateuser/{id}", UpdateUserHandler).Methods("PATCH", "OPTIONS")
+	//Use PATCH method for API endpoints that perform partial updates on a Resource
+	// PUT is used for replacing a resource in full
+	router.HandleFunc("/api/updateuser/{id}", UpdateUserHandler).Methods("PUT", "OPTIONS")
+	// I will update the handlers.go file for partial update feature.
 
 	return router
 }
